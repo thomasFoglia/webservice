@@ -1,6 +1,6 @@
 <?php
 
-class ReservationController extends MyController
+class ReservationController
 {
     // get one
     // or get all
@@ -44,3 +44,5 @@ class ReservationController extends MyController
         return $data;
     }
 }
+
+?>

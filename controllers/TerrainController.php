@@ -1,6 +1,6 @@
 <?php
 
-class TerrainController extends MyController
+class TerrainController 
 {
     // get one
     // or get all
@@ -44,3 +44,5 @@ class TerrainController extends MyController
         return $data;
     }
 }
+
+?>
