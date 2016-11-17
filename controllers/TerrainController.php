@@ -23,7 +23,14 @@ class TerrainController
             $id_terrain = (int)$request->url_elements[2];
             // delete id = $id_terrain
             
-            $data["message"] = "Données supprimées";
+            $pdo = new bdd();
+            $nb = $pdo->exec('DELETE FROM terrain WHERE id = ' . $id_terrain);
+            
+            if ($nb == 1){
+                $data["message"] = "Le terrain ". $id_terrain .' a été supprimé';
+            } else {
+                $data["message"] = "Ce terrain n'existe pas";
+            }
             return $data;
         }
     }
