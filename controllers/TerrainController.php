@@ -18,7 +18,6 @@ class TerrainController
             $datas = $pdo->select('SELECT * FROM terrain');
         }
         
-        $data["message"] = $datas;
         return $datas;
     }
     
@@ -32,9 +31,9 @@ class TerrainController
             $nb = $pdo->exec('DELETE FROM terrain WHERE id = ' . $id_terrain);
             
             if ($nb == 1){
-                $data["message"] = "Le terrain ". $id_terrain .' a été supprimé';
+                $data = "Le terrain ". $id_terrain .' a été supprimé';
             } else {
-                $data["message"] = "Ce terrain n'existe pas";
+                $data = "Ce terrain n'existe pas";
             }
             return $data;
         }
