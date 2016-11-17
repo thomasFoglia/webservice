@@ -1,10 +1,8 @@
 <?php
 
-<<<<<<< HEAD
-class TerrainController 
-=======
+
 class TerrainController
->>>>>>> origin/master
+
 {
     // get one
     // or get all
