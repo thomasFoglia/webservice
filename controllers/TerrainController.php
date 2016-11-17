@@ -7,16 +7,19 @@ class TerrainController
     // get one
     // or get all
     public function getAction($request) {
-        if(isset($request->url_elements[2])) {
+        $pdo = new bdd();
+        if(isset($request->url_elements[2]) && $request->url_elements[2] != '') {
             // get id = $id_terrain
             $id_terrain = (int)$request->url_elements[2];
             // get in BDD
-            $data["message"] = "";
+            $datas = $pdo->select('SELECT * FROM terrain WHERE id = ' . $id_terrain);
         } else {
             // get all
-            $data["message"] = "";
+            $datas = $pdo->select('SELECT * FROM terrain');
         }
-        return $data;
+        
+        $data["message"] = $datas;
+        return $datas;
     }
     
     // delete

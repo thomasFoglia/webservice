@@ -22,8 +22,7 @@ class bdd {
     // retourne un tableau de data
     function select($sql){
         $req = $this->pdo->query($sql);
-        $req->execute($req);
-        return $req->fetchAll();
+        return $req->fetchAll(PDO::FETCH_ASSOC);
     }
     
 
