@@ -1,6 +1,6 @@
 <?php
 
-class TerrainController extends MyController
+class TerrainController
 {
     // get one
     // or get all
@@ -23,6 +23,8 @@ class TerrainController extends MyController
             $id_terrain = (int)$request->url_elements[2];
             // delete id = $id_terrain
             
+            $data["message"] = "Données supprimées";
+            return $data;
         }
     }
     
