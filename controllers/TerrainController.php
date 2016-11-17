@@ -18,7 +18,7 @@ class TerrainController
         }
         return $data;
     }
-    
+     
     // delete
     public function deleteAction($request) {
         if(isset($request->url_elements[2])) {
