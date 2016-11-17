@@ -35,7 +35,6 @@ class Request {
             }
         }
         $this->format = "json";
-        break;
            
         $this->parameters = $parameters;
     }
