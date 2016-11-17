@@ -31,10 +31,11 @@ class ReservationController
             $nb = $pdo->exec('DELETE FROM reservation WHERE id = ' . $id_reservation);
             
             if ($nb == 1){
-                $data["message"] = "La reservation ". $id_reservation .' a été supprimée';
+                $data = "La reservation ". $id_reservation .' a été supprimée';
             } else {
-                $data["message"] = "Cette réservation n'existe pas";
+                $data = "Cette réservation n'existe pas";
             }
+            return $data;
         }
     }
     
