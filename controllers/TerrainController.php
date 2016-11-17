@@ -1,6 +1,10 @@
 <?php
 
+<<<<<<< HEAD
 class TerrainController 
+=======
+class TerrainController
+>>>>>>> origin/master
 {
     // get one
     // or get all
@@ -23,6 +27,8 @@ class TerrainController
             $id_terrain = (int)$request->url_elements[2];
             // delete id = $id_terrain
             
+            $data["message"] = "Données supprimées";
+            return $data;
         }
     }
     

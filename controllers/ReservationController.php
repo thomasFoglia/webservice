@@ -22,7 +22,8 @@ class ReservationController
         if(isset($request->url_elements[2])) {
             $id_terrain = (int)$request->url_elements[2];
             // delete id = $id_terrain
-            
+
+            $data["message"] = "Données supprimées";
         }
     }
     
