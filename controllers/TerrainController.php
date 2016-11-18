@@ -44,7 +44,7 @@ class TerrainController
         $data = $request->parameters;
         // parse parameters
         
-        $data['message'] = "Les données ont été mise à jour";
+        $data = "Les données ont été mise à jour";
         return $data;
     }
     
@@ -53,7 +53,7 @@ class TerrainController
         $data = $request->parameters;
         // parse parameters
         
-        $data['message'] = "Les données ont été enregistrées";
+        $data = "Les données ont été enregistrées";
         return $data;
     }
 }

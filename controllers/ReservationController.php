@@ -12,14 +12,12 @@ class ReservationController
             // get id = $id_terrain
             $id_reservation = (int)$request->url_elements[2];
             // get in BDD
-            $datas =  $pdo->select('SELECT * FROM reservation WHERE id = ' . $id_reservation);
-            $data["message"] = "";
+            $data =  $pdo->select('SELECT * FROM reservation WHERE id = ' . $id_reservation);
         } else {
             // get all
-            $datas =  $pdo->select('SELECT * FROM reservation'); 
-            $data["message"] = "";
+            $data =  $pdo->select('SELECT * FROM reservation'); 
         }
-        return $datas;
+        return $data;
     }
     
     // delete
@@ -44,7 +42,7 @@ class ReservationController
         $data = $request->parameters;
         // parse parameters
         
-        $data['message'] = "Les données ont été mise à jour";
+        $data = "Les données ont été mise à jour";
         return $data;
     }
     
@@ -53,7 +51,7 @@ class ReservationController
         $data = $request->parameters;
         // parse parameters
         
-        $data['message'] = "Les données ont été enregistrées";
+        $data = "Les données ont été enregistrées";
         return $data;
     }
 }
