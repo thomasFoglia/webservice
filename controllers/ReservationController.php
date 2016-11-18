@@ -7,8 +7,6 @@ class ReservationController
     public function getAction($request) {
         $pdo = new bdd();
         if(isset($request->url_elements[2]) && $request->url_elements[2] != '') {
-            
-
             // get id = $id_terrain
             $id_reservation = (int)$request->url_elements[2];
             // get in BDD
@@ -29,11 +27,11 @@ class ReservationController
             $nb = $pdo->exec('DELETE FROM reservation WHERE id = ' . $id_reservation);
             
             if ($nb == 1){
-                $data = "La reservation ". $id_reservation .' a été supprimée';
+                header("HTTP/1.1 200 Sucessfully deleted");
             } else {
-                $data = "Cette réservation n'existe pas";
+                header("HTTP/1.1 404 Reservation not found");
             }
-            return $data;
+            return [];
         }
     }
     
