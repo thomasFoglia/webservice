@@ -48,12 +48,39 @@ class ReservationController
     
     // create
     public function postAction($request) {
-        $data = $request->parameters;
-        // parse parameters
+        $pdo = new bdd();
+        $data = strtotime($request->parameters['heure_reservation']);
+        $data = date('Y-m-d H',$data);
+        if ($this->validateDate($data)) {
+            // check si un terrain est dispo avec une requête
+            $terrain_libre = $pdo->select('SELECT * FROM terrain t WHERE t.available = 1 and NOT EXISTS( SELECT t.id FROM reservation r WHERE  t.id = r.id_terrain AND r.heure_reservation = "'.$data.'")');
+            
+            if (!empty($terrain_libre)) {
+                $terrainId = $terrain_libre[0]["id"];
+                $lastId = $pdo->create("INSERT INTO reservation (heure_reservation,id_terrain) values('$data',$terrainId)");
+                $my_resa = $pdo->select('SELECT * FROM reservation WHERE id = '.$lastId);
+                $data = $my_resa;
+                header("HTTP/1.1 200 Sucessfully created");
+            } else {
+                $data = [];
+                header("HTTP/1.1 404 No terrains available");
+            }
+            
+        } else {
+             $data = [];
+             header("HTTP/1.1 404 Bad Parameter Date");
+        }
+
         
-        $data = "Les données ont été enregistrées";
+        // parse parameters
         return $data;
     }
+
+    public function validateDate($date, $format = 'Y-m-d H')
+    {
+        $d = DateTime::createFromFormat($format, $date);
+        return $d && $d->format($format) == $date;
+    }   
 }
 
 ?>

@@ -12,12 +12,20 @@ class bdd {
         $this->pdo = new PDO('mysql:host=localhost;dbname='.$this->db, 'root', '');       
     }
     
-    // insert or delete
+    //delete
+    //retourne le nombre de row affectés
     public function exec($sql) {  
         $res = $this->pdo->exec($sql);     
         return $res;
     }
     
+    //insert
+    //retourn id ajouté
+     public function create($sql) {  
+        $res = $this->pdo->exec($sql);
+        return $this->pdo->lastInsertId();
+    }
+
     // execute un select
     // retourne un tableau de data
     function select($sql){
