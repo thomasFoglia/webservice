@@ -12,13 +12,13 @@ class TerrainController
             // get id = $id_terrain
             $id_terrain = (int)$request->url_elements[2];
             // get in BDD
-            $datas = $pdo->select('SELECT * FROM terrain WHERE id = ' . $id_terrain);
+            $data = $pdo->select('SELECT * FROM terrain WHERE id = ' . $id_terrain);
         } else {
             // get all
-            $datas = $pdo->select('SELECT * FROM terrain');
+            $data = $pdo->select('SELECT * FROM terrain');
         }
         
-        return $datas;
+        return $data;
     }
     
     // delete
@@ -31,29 +31,56 @@ class TerrainController
             $nb = $pdo->exec('DELETE FROM terrain WHERE id = ' . $id_terrain);
             
             if ($nb == 1){
-                $data = "Le terrain ". $id_terrain .' a été supprimé';
+                // http 200
+                header("HTTP/1.1 200 terrain deleted");
             } else {
-                $data = "Ce terrain n'existe pas";
+                // header 404
+                header("HTTP/1.1 404 terrain unkonow");
             }
-            return $data;
+            
+            return [];
         }
     }
     
     // update
-     public function putAction($request) {
-        $data = $request->parameters;
+    public function putAction($request) {
+        $parameters = $request->parameters;
         // parse parameters
+        $id = $parameters["id"];
+        $available = $parameters["available"];
+
+        $pdo = new bdd();
+        $pdo->exec("UPDATE terrain SET available = $available WHERE id = $id");
+        // get object terrain by id :
+        $obj = $pdo->select("SELECT * FROM terrain WHERE id = " . $id);
         
-        $data = "Les données ont été mise à jour";
-        return $data;
+        // http 200
+        header("HTTP/1.1 200 terrain updated");
+        $data = $obj;
+        return $obj;
     }
     
     // create
     public function postAction($request) {
-        $data = $request->parameters;
-        // parse parameters
-        
-        $data = "Les données ont été enregistrées";
+        $data = [];
+        $parameters = $request->parameters;
+        if ($parameters != null) {
+            // parse parameter available
+            $available = $parameters["available"];
+            
+            $pdo = new bdd();
+            $id_inserted = $pdo->create("INSERT INTO terrain (available) VALUES ($available)");
+            
+            // get object terrain by id :
+            $obj = $pdo->select("SELECT * FROM terrain WHERE id = " . $id_inserted);
+            
+            $data = $obj;
+            // http 200
+            header("HTTP/1.1 200 Terrain created");
+            return $data;
+        }
+        // http 404
+        header("HTTP/1.1 404 Missing parameters");
         return $data;
     }
 }
