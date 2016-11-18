@@ -7,12 +7,14 @@ class Request {
 
     public function __construct() {
         $this->verb = $_SERVER['REQUEST_METHOD'];
-        $this->url_elements = explode('/', $_SERVER['PATH_INFO']);
+        if (!empty($_SERVER['PATH_INFO'])){
+            $this->url_elements = explode('/', $_SERVER['PATH_INFO']);
 
-        $this->parseIncomingParams();
-        $this->format = 'json';
-        if(isset($this->parameters['format'])) {
-            $this->format = $this->parameters['format'];
+            $this->parseIncomingParams();
+            $this->format = 'json';
+            if(isset($this->parameters['format'])) {
+                $this->format = $this->parameters['format'];
+            }
         }
         return true;
     }

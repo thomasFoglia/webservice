@@ -3,20 +3,21 @@
 spl_autoload_register('apiAutoload');
 function apiAutoload($classname)
 {
-    if (preg_match('/[a-zA-Z]+Controller$/', $classname)) {
-        include __DIR__ . '/controllers/' . $classname . '.php';
-        return true;
-    } elseif (preg_match('/[a-zA-Z]+Model$/', $classname)) {
-        include __DIR__ . '/models/' . $classname . '.php';
-        return true;
-    } elseif (preg_match('/[a-zA-Z]+View$/', $classname)) {
-        include __DIR__ . '/views/' . $classname . '.php';
-        return true;
-    } else {
-        include __DIR__ . '/library/' . str_replace('_', DIRECTORY_SEPARATOR, $classname) . '.php';
-        return true;
+    // si on a une entite en parametre
+    if ($classname != 'Controller') {
+        if (preg_match('/[a-zA-Z]+Controller$/', $classname)) {
+            include __DIR__ . '/controllers/' . $classname . '.php';
+            return true;
+        } elseif (preg_match('/[a-zA-Z]+View$/', $classname)) {
+            include __DIR__ . '/views/' . $classname . '.php';
+            return true;
+        } else {
+            include __DIR__ . '/library/' . str_replace('_', DIRECTORY_SEPARATOR, $classname) . '.php';
+            return true;
+        }
+        return false;
     }
-    return false;
+    return true;
 }
 
 $request = new Request();
