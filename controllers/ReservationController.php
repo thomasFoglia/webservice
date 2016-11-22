@@ -14,7 +14,7 @@ class ReservationController
             $data =  $pdo->select('SELECT * FROM reservation WHERE id = ' . $id_reservation);
             /*Vérifier si la requête retourne quelque chose*/
             if($data == []) {
-               header("HTTP/1.1 404 Reservation not found"); 
+               header("HTTP/1.1 404 Reservation Not Found"); 
             } else {
                 header("HTTP/1.1 200 Reservation Found");
             }
@@ -60,49 +60,56 @@ class ReservationController
             /*Récupérer l'entité réservation en fonction de l'id*/
             $my_resa = $pdo->select('SELECT * FROM reservation where id='.$id.'');
             
-            /*Vérifier si un paramètre heure_reservation de la réservation est bien renseigné*/
-            if(isset($parameters["heure_reservation"]) && $parameters["heure_reservation"] != '' ) {
-                $heure = $parameters["heure_reservation"];
-            } else {
-                /*Sinon la valeur de heure_reservation ne sera pas modifiée pour cette réservation*/
-                $heure = $my_resa[0]["heure_reservation"];
-            }
+            if (!empty($my_resa)) {
 
-            /*Vérifier si un paramètre id_terrain de la réservation est bien renseigné*/
-            if(isset($parameters["id_terrain"]) && $parameters["id_terrain"] != '') {
-                 $terrainId = $parameters["id_terrain"];
-            } else {
-                /*Sinon la valeur de id_terrain ne sera pas modifiée pour cette réservation*/
-                $terrainId = $my_resa[0]["id_terrain"];
-            }  
-
-
-            $heure = strtotime($heure);
-            $heure = date('Y-m-d H',$heure);
-            // Check si heure valide selon le schéma Année-mois-jour Heure
-            if ($this->validateDate($heure)) {
-                /*Vérifier si changement possible (date pour un terrain pas déjà prise)*/
-                $exist = $pdo->select('SELECT * FROM reservation where id_terrain= '.$terrainId.' and heure_reservation = "'.$heure.'"');
-                if(empty($exist)) {
-                    /*Requête pour modification*/
-                    $pdo->exec("UPDATE reservation SET id_terrain = $terrainId ,heure_reservation = '$heure'  WHERE id = $id");
-                    /*Récupérer la réservation modifiée*/
-                    $obj = $pdo->select("SELECT * FROM reservation WHERE id = " .$id);
-                    $data = $obj;
-                    header("HTTP/1.1 200 Sucessfully updated");
+                /*Vérifier si un paramètre heure_reservation de la réservation est bien renseigné*/
+                if(isset($parameters["heure_reservation"]) && $parameters["heure_reservation"] != '' ) {
+                    $heure = $parameters["heure_reservation"];
                 } else {
-                    /*Message d'erreur si réservation déjà prise pour un terrain à une telle heure*/
-                    $data = [];
-                    header("HTTP/1.1 404 Terrain is already taken ");
+                    /*Sinon la valeur de heure_reservation ne sera pas modifiée pour cette réservation*/
+                    $heure = $my_resa[0]["heure_reservation"];
                 }
+
+                /*Vérifier si un paramètre id_terrain de la réservation est bien renseigné*/
+                if(isset($parameters["id_terrain"]) && $parameters["id_terrain"] != '') {
+                     $terrainId = $parameters["id_terrain"];
+                } else {
+                    /*Sinon la valeur de id_terrain ne sera pas modifiée pour cette réservation*/
+                    $terrainId = $my_resa[0]["id_terrain"];
+                }  
+
+
+                $heure = strtotime($heure);
+                $heure = date('Y-m-d H',$heure);
+                // Check si heure valide selon le schéma Année-mois-jour Heure
+                if ($this->validateDate($heure)) {
+                    /*Vérifier si changement possible (date pour un terrain pas déjà prise)*/
+                    $exist = $pdo->select('SELECT * FROM reservation where id_terrain= '.$terrainId.' and heure_reservation = "'.$heure.'"');
+                    if(empty($exist)) {
+                        /*Requête pour modification*/
+                        $pdo->exec("UPDATE reservation SET id_terrain = $terrainId ,heure_reservation = '$heure'  WHERE id = $id");
+                        /*Récupérer la réservation modifiée*/
+                        $obj = $pdo->select("SELECT * FROM reservation WHERE id = " .$id);
+                        $data = $obj;
+                        header("HTTP/1.1 200 Sucessfully updated");
+                    } else {
+                        /*Message d'erreur si réservation déjà prise pour un terrain à une telle heure*/
+                        $data = [];
+                        header("HTTP/1.1 404 Terrain is already taken ");
+                    }
+                } else {
+                    /*Message d'erreur si la date n'est pas dans le bon format*/
+                    $data = [];
+                     header("HTTP/1.1 404 Bad Parameter Date");
+                }
+
             } else {
-                /*Message d'erreur si la date n'est pas dans le bon format*/
-                $data = [];
-                 header("HTTP/1.1 404 Bad Parameter Date");
-            }
+              $data = [];
+              header("HTTP/1.1 404 Reservation not found"); 
+            } 
         } else {
             $data = [];
-                 header("HTTP/1.1 404 Reservation id not found");
+            header("HTTP/1.1 404 Reservation id not found");
         }
         return $data;
     }
