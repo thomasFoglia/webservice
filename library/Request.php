@@ -22,12 +22,12 @@ class Request {
     public function parseIncomingParams() {
         $parameters = array();
 
-        // get
+        // get / delete
         if (isset($_SERVER['QUERY_STRING'])) {
             parse_str($_SERVER['QUERY_STRING'], $parameters);
         }
 
-        // put / post / delete
+        // put / post
         $body = file_get_contents("php://input");
         
         $body_params = json_decode($body);
