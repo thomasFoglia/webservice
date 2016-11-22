@@ -12,6 +12,12 @@ class ReservationController
             $id_reservation = (int)$request->url_elements[2];
             // Requête BDD en fonction de l'id récupéré
             $data =  $pdo->select('SELECT * FROM reservation WHERE id = ' . $id_reservation);
+            /*Vérifier si la requête retourne quelque chose*/
+            if($data == []) {
+               header("HTTP/1.1 404 Reservation not found"); 
+            } else {
+                header("HTTP/1.1 200 Reservation Found");
+            }
         } else {
             // Si pas de paramètres renvoyer toutes les entités réservations
             $data =  $pdo->select('SELECT * FROM reservation'); 
