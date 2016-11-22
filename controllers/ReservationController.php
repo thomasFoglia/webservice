@@ -20,7 +20,8 @@ class ReservationController
             }
         } else {
             // Si pas de paramètres renvoyer toutes les entités réservations
-            $data =  $pdo->select('SELECT * FROM reservation'); 
+            $data =  $pdo->select('SELECT * FROM reservation');
+            header("HTTP/1.1 200 Found");
         }
         return $data;
     }
