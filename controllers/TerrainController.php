@@ -45,24 +45,25 @@ class TerrainController
     // update
     public function putAction($request) {
         $parameters = $request->parameters;
-        
+        $pdo = new bdd();
          // parse parameters
         // id required !
         if(!isset($parameters["id"]) || $parameters["id"] == '' ) {
             header("HTTP/1.1 404 Missing Parameter Id");
             return [];
+        } else {
+            $id = $parameters["id"];
         }
         
         $my_terrain = $pdo->select('SELECT * FROM terrain where id='.$id.'');
         
         if(!isset($parameters["available"]) || $parameters["available"] == '' ) {
-            $available = $parameters["available"];
-        } else {
             $available = $my_terrain[0]["available"];
+        } else {
+            $available = $parameters["available"];
         }
 
 
-        $pdo = new bdd();
         $pdo->exec("UPDATE terrain SET available = $available WHERE id = $id");
         // get object terrain updated
         $obj = $pdo->select("SELECT * FROM terrain WHERE id = " . $id);
