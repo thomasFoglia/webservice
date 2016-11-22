@@ -66,6 +66,11 @@ class TerrainController
         
         $my_terrain = $pdo->select('SELECT * FROM terrain where id='.$id.'');
         
+        if (empty($my_terrain)) {
+            header("HTTP/1.1 404 Terrain Not Found");
+            return [];
+        }
+        
         if(!isset($parameters["available"]) || $parameters["available"] == '' ) {
             $available = $my_terrain[0]["available"];
         } else {
