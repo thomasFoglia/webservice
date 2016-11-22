@@ -14,9 +14,18 @@ class TerrainController
             $id_terrain = (int)$request->url_elements[2];
             // get in BDD
             $data = $pdo->select('SELECT * FROM terrain WHERE id = ' . $id_terrain);
+            if (empty($data)){
+                // http 404
+                header("HTTP/1.1 404 Terrain Not Found");
+                return [];
+            }
+            // http 200
+            header("HTTP/1.1 200 Terrain Found");
+            return $data;
         } else {
             // get all
             $data = $pdo->select('SELECT * FROM terrain');
+            header("HTTP/1.1 200 OK");
         }
         
         return $data;
