@@ -27,7 +27,7 @@ class Request {
             parse_str($_SERVER['QUERY_STRING'], $parameters);
         }
 
-        // put / post
+        // put / post / delete
         $body = file_get_contents("php://input");
         
         $body_params = json_decode($body);

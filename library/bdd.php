@@ -1,5 +1,7 @@
 <?php
-
+/**
+* Classe permettant de gérer les accès à la BDD
+**/
 class bdd {
     public $pdo;
     public $db = 'webservice';
@@ -20,7 +22,7 @@ class bdd {
         return $res;
     }
     
-    //insert
+    // insert / update
     //retourn id ajouté
      public function create($sql) {  
         $res = $this->pdo->exec($sql);
