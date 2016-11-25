@@ -4,14 +4,14 @@
 **/
 class bdd {
     public $pdo;
-    public $db = 'u627327885_sq';
+    public $db = 'webservice';
     
     public function __construct() {
         $this->connect();
     }
     
     public function connect(){
-        $this->pdo = new PDO('mysql:host=localhost;dbname='.$this->db, 'u627327885_user', 'root38');      
+        $this->pdo = new PDO('mysql:host=localhost;dbname='.$this->db, 'root', '');      
     }
     
 
