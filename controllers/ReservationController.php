@@ -28,10 +28,13 @@ class ReservationController
     
     // Récupérer l'action DELETE
     public function deleteAction($request) {
-        if(isset($request->url_elements[2])) {
-            $id_reservation = (int)$request->url_elements[2];
+        $parameters = $request->parameters;
+        $pdo = new bdd();
+
+        if(isset($parameters["id"]) && $parameters["id"] != '') {
+            $id_reservation = $parameters["id"];
             // delete id = $id_terrain
-            $pdo = new bdd();
+            
             // Requête BDD en fonction de l'id récupéré (nb est le nombre de lignes affectées)
             $nb = $pdo->exec('DELETE FROM reservation WHERE id = ' . $id_reservation);
             
@@ -43,6 +46,9 @@ class ReservationController
                 /*Sinon*/
                 header("HTTP/1.1 404 Reservation not found");
             }
+            return [];
+        } else {
+            header("HTTP/1.1 404 id reservation not found");
             return [];
         }
     }

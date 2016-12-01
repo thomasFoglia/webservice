@@ -33,20 +33,35 @@ class TerrainController
     
     // delete
     public function deleteAction($request) {
-        if(isset($request->url_elements[2])) {
-            $id_terrain = (int)$request->url_elements[2];
+        $parameters = $request->parameters;
+        $pdo = new bdd();
+
+        if(isset($parameters["id"]) && $parameters["id"] != '') {
+            $id_terrain = $parameters["id"];
             // delete id = $id_terrain
-            $pdo = new bdd();
-            $nb = $pdo->exec('DELETE FROM terrain WHERE id = ' . $id_terrain);
             
-            if ($nb == 1){
-                // http 200
-                header("HTTP/1.1 200 Sucessfully terrain deleted");
+            $terrain = $pdo->select('SELECT * FROM terrain where id ='.$id_terrain);
+            /*On vérifie si l'id est bon*/
+            if (!empty($terrain)){
+                /*Check si une reservation existe sur le terrain qui va être supprimé*/
+                $reservation = $pdo->select('SELECT * FROM reservation where id_terrain='.$id_terrain);
+                if (empty($reservation)) {
+                    $nb = $pdo->exec('DELETE FROM terrain WHERE id = ' . $id_terrain);
+                    // http 200
+                    header("HTTP/1.1 200 Sucessfully terrain deleted");
+                } else {
+                    // header 404
+                    header("HTTP/1.1 404 Forbidden, there is a reservation");
+                }
+                return [];
             } else {
                 // header 404
-                header("HTTP/1.1 404 terrain not found");
+                header("HTTP/1.1 404 Terrain not found");
             }
             
+            return [];
+        } else {
+            header("HTTP/1.1 404 id terrain not found");
             return [];
         }
     }
