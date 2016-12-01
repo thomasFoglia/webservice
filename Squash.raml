@@ -16,14 +16,16 @@ schemas:
                 type: integer
                 required: true
                 repeat: false
-                example: /reservation/1
+                example: /reservation/?id=1
         responses: 
             "200": 
+                description: Réservation trouvée
                 body: 
                     application/json: 
                         schema: Reservation
                         example: '[{"id":1,"heure_reservation":null,"id_terrain":1}]'
             "404": 
+                description: Réservation non trouvée
                 body: 
                     application/json: 
                         schema: Reservation
@@ -51,6 +53,7 @@ schemas:
                 example: '{"heure_reservation" : "01-01-1970 17"}'
         responses: 
             "200": 
+                description: Réservation modifiée
                 body: 
                     application/json: 
                         schema: Reservation
@@ -90,11 +93,19 @@ schemas:
                 example: /reservation/1
         responses: 
             "200": 
+                description: Réservation supprimée
+                body: 
+                    application/json: 
+                        schema: Reservation
+                        example: '{"id":1,"heure_reservation":null,"id_terrain":1}'
+            "400": 
+                description: Il n'y a pas d'id en paramètre d'entrée
                 body: 
                     application/json: 
                         schema: Reservation
                         example: '{"id":1,"heure_reservation":null,"id_terrain":1}'
             "404": 
+                description: L'id en entrée n'est associé à aucune réservation
                 body: 
                     application/json: 
                         schema: Reservation
@@ -110,6 +121,7 @@ schemas:
                 example: '{"heure_reservation" : "01-01-1970 17"}'
         responses: 
             "200": 
+                description: Réservation créée
                 body: 
                     application/json: 
                         schema: Reservation
@@ -147,14 +159,16 @@ schemas:
                 type: integer
                 required: false
                 repeat: false
-                example: /terrain/1
+                example: /terrain/?id=1
         responses: 
             "200": 
+                description: Terrain trouvé
                 body: 
                     application/json: 
                         schema: Terrain
                         example: '{"id":1,"available":false}'
             "404": 
+                description: Terrain non trouvé
                 body: 
                     application/json: 
                         schema: Terrain
@@ -175,6 +189,7 @@ schemas:
                 repeat: false
         responses: 
             "200": 
+                description: Terrain modifié
                 body: 
                     application/json: 
                         schema: Terrain
@@ -196,11 +211,25 @@ schemas:
                 example: /terrain/1
         responses: 
             "200": 
+                description: Terrain supprimé
+                body: 
+                    application/json: 
+                        schema: Terrain
+                        example: '{"id":1,"available":false}'
+            "400": 
+                description: Pas d'id en entrée
+                body: 
+                    application/json: 
+                        schema: Terrain
+                        example: '{"id":1,"available":false}'
+            "403": 
+                description: Suppression impossible, il existe une réservation pour le terrain à supprimer
                 body: 
                     application/json: 
                         schema: Terrain
                         example: '{"id":1,"available":false}'
             "404": 
+                description: L'id en entrée n'est associé à aucun terrain
                 body: 
                     application/json: 
                         schema: Terrain
@@ -215,11 +244,13 @@ schemas:
                 repeat: false
         responses: 
             "200": 
+                description: Terrain créé
                 body: 
                     application/json: 
                         schema: Terrain
                         example: '{"id":1,"available":false}'
             "404": 
+                description: Pas de paramètre available en entrée
                 body: 
                     application/json: 
                         schema: Terrain
